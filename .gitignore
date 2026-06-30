@@ -19,7 +19,6 @@ instance/
 *.db
 
 # Tests / coverage
-tests/
 .pytest_cache/
 .coverage
 htmlcov/

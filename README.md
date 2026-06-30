@@ -1,49 +1,95 @@
-# AI Complaint System (Flask Backend)
+# AI Complaint System
 
-## Requirements
-- Python 3.11+ (recommended)
-- Virtualenv (recommended)
+REST API for complaints with user registration and JWT auth.
 
-## Setup (Windows)
-1. Create venv
-	- `python -m venv venv`
-	- `venv\Scripts\activate`
-2. Install deps
-	- `pip install -r requirements.txt`
-	- (optional dev) `pip install -r requirements-dev.txt`
-3. Configure env
-	- Copy `.env.example` → `.env`
-	- Set `SECRET_KEY`, `JWT_SECRET_KEY`, `DATABASE_URL`
-4. Migrate DB
-	- `flask db upgrade`
-5. Run
-	- `python run.py`
+## Local Access
 
-## Production run
-- Windows (Waitress): `waitress-serve --call run:app`
-- Linux (Gunicorn): `gunicorn -w 2 -b 0.0.0.0:8000 run:app`
+- **Backend API:** [http://localhost:5000](http://localhost:5000)
+- **Frontend App:** [http://localhost:5173](http://localhost:5173)
 
-## API Quickstart
-### Register
-POST `/auth/register`
-```json
-{ "name": "Alice", "email": "alice@example.com", "password": "pass1234" }
+## Frontend
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+Open http://localhost:5173
+
+## Tech Stack
+
+- Backend: Python Flask 3.1.2
+- Database: SQLite (Development), PostgreSQL 15 (Production ready)
+
+## Prerequisites
+
+- Python 3.11+
+- SQLite or PostgreSQL 15+
+
+## Getting Started
+
+```bash
+git clone [repo]
+cd ai-complaint-system/backend
+cp .env.example .env
+# fill in .env values
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+pytest tests/
+python run.py
 ```
 
-### Login
-POST `/auth/login`
-```json
-{ "email": "alice@example.com", "password": "pass1234" }
+## Environment Variables
+
+| Variable        | Description          | Example                                      |
+| --------------- | -------------------- | -------------------------------------------- |
+| DATABASE_URL    | DB connection string | postgresql://user:pass@localhost:5432/dbname |
+| SECRET_KEY      | App secret key       | your-secret-key                              |
+| JWT_SECRET_KEY  | JWT signing secret   | your-jwt-secret                              |
+| LOG_LEVEL       | Logging level        | INFO                                         |
+| ALLOWED_ORIGINS | CORS allowed origins | http://localhost:3000                        |
+
+## API Endpoints
+
+| Method | Route                  | Description       | Auth        |
+| ------ | ---------------------- | ----------------- | ----------- |
+| GET    | /health                | Health check      | No          |
+| POST   | /auth/register         | Register user     | No          |
+| POST   | /auth/login            | Login user        | No          |
+| POST   | /complaints            | Create complaint  | Yes         |
+| GET    | /complaints/my         | Get my complaints | Yes         |
+| GET    | /api/admin/escalations | View escalations  | Yes (Admin) |
+
+## Running Tests
+
+```bash
+cd ai-complaint-system/backend
+pip install -r requirements-dev.txt
+pytest tests/ -v --coverage
 ```
 
-### Create complaint
-POST `/complaints` (Bearer token required)
-```json
-{ "title": "Internet down", "description": "WiFi not working in room" }
+## Folder Structure
+
 ```
-
-### My complaints
-GET `/complaints/my` (Bearer token required)
-
-### Health check
-GET `/health`
+ai-complaint-system/
+├── backend/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── extensions.py
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   └── utils/
+│   ├── tests/
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── config.py
+│   ├── requirements.txt
+│   ├── requirements-dev.txt
+│   └── run.py
+└── frontend/
+    ├── src/
+    ├── index.html
+    ├── package.json
+    └── vite.config.js
+```
