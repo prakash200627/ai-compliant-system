@@ -20,6 +20,9 @@ jobs:
       - name: Build Frontend Image
         run: |
           docker build -t complaint-frontend ./frontend
+      
+      - name: Create test env file
+        run: cp backend/.env.example backend/.env
 
       - name: Validate Compose
         run: |
