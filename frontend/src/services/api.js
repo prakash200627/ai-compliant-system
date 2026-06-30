@@ -65,11 +65,11 @@ export const complaintService = {
 
 export const adminService = {
   getEscalations: () => {
-    return api.get('/api/admin/escalations');
+    return api.get('/admin/escalations');
   },
 
   updateComplaintStatus: (complaintId, status) => {
-    return api.put(`/api/admin/complaints/${complaintId}/status`, { status });
+    return api.put(`/admin/complaints/${complaintId}/status`, { status });
   },
 };
 
